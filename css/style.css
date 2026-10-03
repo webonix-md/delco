@@ -132,10 +132,7 @@ p { margin: 0; }
 .hero { padding: 72px 0 96px; background-image: radial-gradient(var(--line) 1px, transparent 1px); background-size: 22px 22px; border-bottom: 2px solid var(--ink); }
 .hero__in { display: grid; grid-template-columns: 1fr 380px; gap: 64px; align-items: start; }
 .hero__title { font-size: clamp(36px, 5.6vw, 64px); font-weight: 700; line-height: 1.04; }
-.hero__title mark {
-  background: linear-gradient(transparent 62%, var(--accent) 62%, var(--accent) 92%, transparent 92%);
-  color: inherit; padding: 0 2px;
-}
+.hero__title mark { background: none; color: var(--accent); padding: 0; }
 .hero__lead { margin-top: 28px; font-size: 19px; max-width: 580px; color: var(--ink2); }
 .hero__actions { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
 .hero__facts { list-style: none; padding: 0; margin: 48px 0 0; display: grid; grid-template-columns: repeat(3, 1fr); border-top: 2px solid var(--ink); }
@@ -521,6 +518,11 @@ p { margin: 0; }
 .transport > div:nth-child(2) .routes i { background: var(--ok); color: #fff; border-color: var(--ok); }
 .transport > div:nth-child(3) .routes i { background: #F4C430; }
 .steps--3 { grid-template-columns: repeat(3, 1fr); }
+.find { display: grid; grid-template-columns: minmax(0, 613px) minmax(0, 1fr); gap: 32px; align-items: start; }
+.find .transport { grid-template-columns: 1fr; }
+.find__photo { margin: 0; border: 2px solid var(--ink); background: var(--card); box-shadow: var(--shadow-card); }
+.find__photo img { width: 100%; height: auto; display: block; }
+.find__photo figcaption { padding: 10px 14px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink2); }
 
 /* ---------- появление при прокрутке ---------- */
 .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
@@ -549,6 +551,8 @@ p { margin: 0; }
   .steps--3 { grid-template-columns: 1fr; }
   .split { grid-template-columns: 1fr; gap: 32px; }
   .places { grid-template-columns: 1fr 1fr; }
+  .find { grid-template-columns: 1fr; }
+  .find .transport { grid-template-columns: repeat(3, 1fr); }
   .included { grid-template-columns: 1fr 1fr; }
 }
 
@@ -652,7 +656,8 @@ p { margin: 0; }
   .places { grid-template-columns: 1fr; }
   .lang { grid-template-columns: 1fr; }
   .included { grid-template-columns: 1fr; }
-  .transport { grid-template-columns: 1fr; }
+  .transport, .find .transport { grid-template-columns: 1fr; }
+  .find__photo { margin-right: 4px; }
   .map--tall, .map--tall iframe { min-height: 340px; }
   .cta-band__btns { width: 100%; }
 }

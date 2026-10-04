@@ -140,6 +140,67 @@ p { margin: 0; }
 .hero__facts li + li { padding-left: 16px; border-left: 1px solid var(--line); }
 .hero__facts b { display: block; font: 700 30px/1.1 var(--font-head); color: var(--ink); margin-bottom: 6px; }
 
+/* hero с фото: фото справа тает в цвет бумаги (рецепт milkmark), точечная сетка — поверх всего */
+.hero--photo { position: relative; overflow: hidden; background-image: none; }
+.hero--photo::after {
+  content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image: radial-gradient(var(--line) 1px, transparent 1px); background-size: 22px 22px; opacity: .55;
+}
+.hero--photo .hero__in { position: relative; z-index: 2; }
+.hero__media { position: absolute; top: 0; right: 0; bottom: 0; width: 65%; }
+.hero__media img { width: 100%; height: 100%; object-fit: cover; object-position: 60% 0%; display: block; }
+.hero__mask {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(98deg, #F4F1EA 0%, #F4F1EA 22%, rgba(244,241,234,.94) 29%, rgba(244,241,234,.72) 36%,
+      rgba(244,241,234,.34) 44%, rgba(244,241,234,.08) 51%, rgba(244,241,234,0) 57%),
+    linear-gradient(#F4F1EA, rgba(244,241,234,.72) 5%, rgba(244,241,234,.32) 11%, rgba(244,241,234,.1) 15%, rgba(244,241,234,0) 20%),
+    linear-gradient(to top, #F4F1EA, rgba(244,241,234,.92) 6%, rgba(244,241,234,.6) 14%, rgba(244,241,234,.28) 24%,
+      rgba(244,241,234,.08) 32%, rgba(244,241,234,0) 38%),
+    /* общая «дымка» поверх всего фото: .3 — светлее/бледнее, 0 — фото как есть */
+    linear-gradient(rgba(244,241,234,.3), rgba(244,241,234,.3));
+}
+
+/* шапки внутренних страниц с фото-фоном: фото справа, тает влево под заголовок.
+   Все шапки одной высоты: --head-h — 72% окна, но не меньше 580px и не больше 820px.
+   Это минимум: если длинный заголовок не влезает, шапка станет выше, но не обрежет текст. */
+.page-head.page-head--photo {
+  --head-h: clamp(580px, 72vh, 820px);
+  position: relative; overflow: hidden; background-image: none;
+  min-height: var(--head-h); padding: 56px 0; display: flex; align-items: center;
+}
+.page-head--photo > .wrap { width: 100%; position: relative; z-index: 2; }
+.page-head--photo h1 { max-width: 720px; font-size: clamp(32px, 4.4vw, 60px); line-height: 1.08; }
+.page-head--photo .page-head__lead { max-width: 600px; font-size: clamp(17px, 1.4vw, 20px); margin-top: 20px; }
+/* «Пункты 39–125» на главах ПДД — маленькой плашкой */
+.page-head--photo .page-head__meta {
+  display: inline-block; margin-top: 18px; padding: 6px 12px;
+  border: 1.5px solid var(--ink); background: rgba(255, 253, 248, .85);
+  font-size: 14px; font-weight: 600; color: var(--ink);
+}
+/* строка действий в шапке: плашка-факт + кнопки */
+.page-head__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 32px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 50px; padding: 0 18px;
+  border: 2px dashed var(--ink); background: rgba(255, 253, 248, .85);
+  font: 600 16px/1.2 var(--font); color: var(--ink);
+}
+.chip b { font: 700 18px/1 var(--font-head); color: var(--accent-ink); }
+.page-head__media { position: absolute; top: 0; right: 0; bottom: 0; width: 50%; }
+/* «Контакты»: настоящее фото лицея с машинами — шире, чтобы были видны и вывеска, и машины */
+body[data-section="contacts"] .page-head__media { width: 62%; }
+body[data-section="contacts"] .page-head__media img { object-position: 50% 50%; }
+.page-head__media img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; display: block; }
+.page-head__mask {
+  position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(98deg, #F4F1EA 0%, #F4F1EA 12%, rgba(244,241,234,.94) 20%, rgba(244,241,234,.72) 30%,
+      rgba(244,241,234,.34) 42%, rgba(244,241,234,.08) 54%, rgba(244,241,234,0) 62%),
+    linear-gradient(to top, #F4F1EA, rgba(244,241,234,.6) 12%, rgba(244,241,234,0) 35%),
+    /* общая «дымка»: 0 — фото как есть, .3 — бледнее */
+    linear-gradient(rgba(244,241,234,.15), rgba(244,241,234,.15));
+}
+
 /* билет */
 .ticket {
   position: relative; margin-top: 8px;
@@ -573,6 +634,22 @@ p { margin: 0; }
   .nav__cta { margin: 24px 0 0; min-height: 52px; font-size: 17px; }
   .header { top: 0; }
   .hero__in { grid-template-columns: 1fr; }
+  /* ТЕЛЕФОН/ПЛАНШЕТ: фото — отдельной чёткой полосой сверху на всю ширину, без вуали;
+     снизу тает в цвет страницы, текст — ниже, на чистом фоне.
+     Высота полосы --strip-h: планшет (до 860px) — 360px, телефон (до 560px) — 210px. */
+  .hero.hero--photo, .page-head.page-head--photo { --strip-h: 360px; display: block; min-height: 0; padding-top: 0; }
+  .page-head.page-head--photo { padding-bottom: 44px; }
+  .hero__media, .page-head__media {
+    position: relative; inset: auto; width: 100% !important;
+    height: var(--strip-h);
+  }
+  .hero__media img, .page-head__media img { object-position: 50% 45%; }
+  .hero__mask, .page-head__mask {
+    background: linear-gradient(to top, #F4F1EA 0%, rgba(244,241,234,.75) 14%, rgba(244,241,234,.3) 30%, rgba(244,241,234,0) 48%);
+  }
+  .hero--photo .hero__in { margin-top: -8px; }
+  .page-head--photo > .wrap { margin-top: -6px; }
+  .page-head__actions .btn, .page-head__actions .chip { flex: 1 1 100%; justify-content: center; }
   .ticket { max-width: 440px; }
   .why { grid-template-columns: 1fr 1fr; }
   .teacher { grid-template-columns: 1fr; gap: 36px; }
@@ -598,6 +675,7 @@ p { margin: 0; }
 
 @media (max-width: 560px) {
   :root { --gutter: 16px; }
+  .hero.hero--photo, .page-head.page-head--photo { --strip-h: 210px; }  /* полоса с фото на телефоне */
   body { font-size: 16px; }
   .topbar__in { justify-content: center; }
   .topbar__in > span:first-child { display: none; }
